@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>随机密码生成器</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel" aria-labelledby="page-title">
+        <header class="panel-header">
+          <p class="eyebrow">GitHub Pages 静态工具</p>
+          <h1 id="page-title">随机密码生成器</h1>
+          <p class="subtitle">本地生成、立即复制，适合自己日常快速使用。</p>
+        </header>
+
+        <section class="output-card" aria-labelledby="result-title">
+          <div class="section-heading">
+            <h2 id="result-title">生成结果</h2>
+            <span id="strength-label" class="strength strength-weak">强度：弱</span>
+          </div>
+
+          <div class="output-row">
+            <label class="sr-only" for="password-output">生成出的密码</label>
+            <input
+              id="password-output"
+              class="password-output"
+              type="text"
+              readonly
+              spellcheck="false"
+              autocomplete="off"
+            />
+            <button id="copy-button" class="secondary-button" type="button">
+              复制密码
+            </button>
+          </div>
+
+          <p id="status-message" class="status-message" role="status" aria-live="polite">
+            准备生成密码
+          </p>
+        </section>
+
+        <section class="controls" aria-labelledby="settings-title">
+          <div class="section-heading">
+            <h2 id="settings-title">生成设置</h2>
+            <button id="generate-button" class="primary-button" type="button">
+              生成密码
+            </button>
+          </div>
+
+          <div class="length-card">
+            <div class="length-header">
+              <label for="length-range">密码长度</label>
+              <input
+                id="length-number"
+                class="length-number"
+                type="number"
+                min="8"
+                max="64"
+                value="16"
+              />
+            </div>
+            <input
+              id="length-range"
+              type="range"
+              min="8"
+              max="64"
+              value="16"
+            />
+            <div class="length-scale" aria-hidden="true">
+              <span>8</span>
+              <span>64</span>
+            </div>
+          </div>
+
+          <div class="option-grid">
+            <label class="option-card" for="include-lowercase">
+              <input id="include-lowercase" type="checkbox" checked />
+              <span>包含小写字母</span>
+            </label>
+
+            <label class="option-card" for="include-uppercase">
+              <input id="include-uppercase" type="checkbox" checked />
+              <span>包含大写字母</span>
+            </label>
+
+            <label class="option-card" for="include-numbers">
+              <input id="include-numbers" type="checkbox" checked />
+              <span>包含数字</span>
+            </label>
+
+            <label class="option-card" for="include-symbols">
+              <input id="include-symbols" type="checkbox" checked />
+              <span>包含特殊字符</span>
+            </label>
+
+            <label class="option-card option-card-wide" for="exclude-ambiguous">
+              <input id="exclude-ambiguous" type="checkbox" />
+              <span>排除易混淆字符（如 0、O、1、l、I）</span>
+            </label>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
