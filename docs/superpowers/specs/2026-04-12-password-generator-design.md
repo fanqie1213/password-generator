@@ -1,166 +1,166 @@
-# Password Generator Design
+﻿# 密码生成器设计文档
 
-## Overview
+## 概述
 
-Build a lightweight static password generator website for personal use. The site will live directly on the `master` branch and be deployable with GitHub Pages without any build step or external dependency.
+构建一个适合个人使用的轻量级静态密码生成网页。项目直接放在 `master` 分支中，以便使用 GitHub Pages 进行静态托管，不引入构建步骤，也不依赖外部服务。
 
-The tool should make it fast to generate strong passwords locally in the browser, copy them to the clipboard, and adjust generation rules without unnecessary UI or marketing content.
+这个工具的目标是在浏览器本地快速生成强密码、复制密码并调整生成规则，界面保持简洁实用，不加入展示型内容或无关营销元素。
 
-## Goals
+## 目标
 
-- Provide a simple single-page password generator that works as a static site.
-- Support configurable password rules with practical defaults.
-- Keep all logic client-side with no persistence and no network dependency.
-- Make the project easy to host with GitHub Pages and easy to maintain manually.
+- 提供一个可直接访问的单页密码生成工具
+- 支持常用密码规则配置，并提供实用默认值
+- 所有逻辑均在前端本地运行，不做存储，不依赖网络接口
+- 项目结构简单，便于通过 GitHub Pages 托管和后续手动维护
+- 页面中的界面文案、提示信息和说明文字全部使用中文
 
-## Non-Goals
+## 非目标
 
-- User accounts, sync, or cloud storage
-- Password history storage
-- Advanced password policy templates for different websites
-- Multi-page navigation or showcase-style landing page
-- Build tooling such as Vite, React, or bundlers
+- 用户账号、登录或同步能力
+- 密码历史记录存储
+- 针对不同网站的高级密码策略模板
+- 多页面导航或展示型首页
+- 使用 Vite、React、打包器等构建工具
 
-## Chosen Approach
+## 选型方案
 
-Use a pure static implementation with `HTML`, `CSS`, and vanilla `JavaScript`.
+使用纯静态方案实现，即 `HTML`、`CSS` 和原生 `JavaScript`。
 
-### Why this approach
+### 选择原因
 
-- Best fit for GitHub Pages because deployment is just serving static files.
-- No installation or build process is needed.
-- The code stays small and easy to edit later.
-- The project is a private utility rather than a product showcase, so a minimal stack is the right trade-off.
+- 最适合 GitHub Pages，直接托管静态文件即可
+- 不需要安装依赖或执行构建命令
+- 代码量小，后续自己修改也更轻松
+- 这是一个自用工具，不是对外展示产品，轻量方案最合适
 
-### Alternatives considered
+### 对比过的其他方案
 
-1. Static page with a CSS framework
-   - Faster styling setup
-   - Rejected because the feature set is small and the extra dependency adds little value
+1. 静态页面加样式框架
+   - 优点是样式起步更快
+   - 缺点是对当前项目帮助有限，反而增加额外依赖
 
-2. React or Vite single-page app
-   - Better component structure for larger apps
-   - Rejected because it adds unnecessary build and maintenance overhead for a small self-use utility
+2. 使用 React 或 Vite 构建单页应用
+   - 优点是组件化更强，适合更大的项目
+   - 缺点是部署和维护成本更高，不符合当前自用工具的需求
 
-## User Experience
+## 用户体验
 
-The page opens directly to a working password generator. A password is generated on initial load so the user can use the tool immediately.
+页面打开后直接显示一个可用的密码生成器，并在首次加载时自动生成一组密码，避免用户先配置再操作。
 
-The main interface contains:
+页面主要包含以下内容：
 
-- A password output field
-- A `Generate Password` button
-- A `Copy Password` button
-- A length control with a default of `16`
-- Character type toggles for lowercase, uppercase, digits, and special characters
-- An option to exclude visually ambiguous characters such as `0`, `O`, `1`, `l`, and `I`
-- A simple strength indicator
-- A short status area for copy feedback or validation messages
+- 一个密码输出框
+- 一个“生成密码”按钮
+- 一个“复制密码”按钮
+- 一个长度控制项，默认值为 `16`
+- 字符类型开关：小写字母、大写字母、数字、特殊字符
+- 一个“排除易混淆字符”选项，例如 `0`、`O`、`1`、`l`、`I`
+- 一个简单的密码强度提示
+- 一个用于显示复制反馈或校验提示的状态区域
 
-## Functional Requirements
+## 功能需求
 
-### Password generation
+### 密码生成
 
-- Default length is `16`.
-- Allowed length range is `8` to `64`.
-- The generator uses cryptographically secure randomness from the browser where available.
-- The generator builds the password from only the enabled character groups.
-- If multiple groups are enabled, the password must include at least one character from each enabled group.
-- The character order is shuffled before display so the required characters are not predictable by position.
+- 默认密码长度为 `16`
+- 允许的密码长度范围为 `8` 到 `64`
+- 优先使用浏览器提供的安全随机数能力
+- 生成结果只能包含当前启用的字符类型
+- 如果启用了多个字符类型，则结果中必须至少包含每种已启用类型的一个字符
+- 在输出前需要打乱字符顺序，避免必选字符总是出现在固定位置
 
-### Character groups
+### 字符类型
 
-Supported groups:
+支持以下字符组：
 
-- Lowercase letters
-- Uppercase letters
-- Digits
-- Special characters
+- 小写字母
+- 大写字母
+- 数字
+- 特殊字符
 
-Ambiguous character exclusion removes commonly confusing characters from the available pools. The exclusion rule applies consistently across all enabled groups.
+当启用“排除易混淆字符”时，需要从所有相关字符组中统一移除常见易混淆字符。
 
-### Validation and error handling
+### 校验与错误处理
 
-- If no character groups are enabled, generation is blocked.
-- The UI shows a clear message telling the user to select at least one character type.
-- The output field should not display a misleading stale success state when generation is invalid.
-- Length input is clamped to the supported range.
+- 当所有字符类型都未选中时，禁止生成密码
+- 页面需要明确提示“请至少选择一种字符类型”
+- 在配置无效时，输出区域不能继续显示误导性的成功状态
+- 长度输入需要限制在支持范围内
 
-### Copy behavior
+### 复制行为
 
-- Clicking `Copy Password` attempts to copy the current password using the Clipboard API.
-- On success, the UI shows a short success message.
-- If clipboard access fails or is unavailable, the UI shows a fallback message instructing the user to copy manually.
+- 点击“复制密码”时，优先调用 Clipboard API 复制当前密码
+- 复制成功后显示简短成功提示
+- 如果浏览器环境不支持复制，或复制失败，则提示用户手动复制
 
-## Strength Indicator
+## 强度提示
 
-The strength indicator is intentionally simple and local to the page.
+强度提示保持简单实用，仅作为页面内参考，不做严格安全审计。
 
-It should use:
+强度判断依据：
 
-- Selected character variety
-- Password length
+- 已启用的字符类型数量
+- 当前密码长度
 
-Output levels:
+输出级别：
 
-- Weak
-- Medium
-- Strong
+- 弱
+- 中
+- 强
 
-This indicator is a practical cue rather than a formal security audit.
+## 架构设计
 
-## Architecture
+项目使用三个主要文件组织：
 
-The project will be organized into three main files:
+- `index.html`：页面结构与表单控件
+- `styles.css`：布局与视觉样式
+- `script.js`：生成逻辑、DOM 交互、校验、复制和强度提示
 
-- `index.html`: page structure and controls
-- `styles.css`: layout and visual styling
-- `script.js`: generator logic, DOM wiring, validation, copy handling, and strength display
+在 `script.js` 中，需要把核心逻辑拆成多个职责清晰的小函数，让密码生成规则可以独立于 DOM 进行测试。
 
-Within `script.js`, the logic should be separated into small focused functions so the core password generation rules can be tested independently from the DOM behavior.
+建议拆分的逻辑单元包括：
 
-Suggested logic units:
+- 根据选项构建字符池
+- 基于字符池和目标长度生成密码
+- 打乱字符顺序
+- 计算密码强度
+- 更新界面状态和提示信息
+- 处理复制操作
 
-- Build character pools from selected options
-- Generate a password from selected pools and target length
-- Shuffle characters
-- Score strength
-- Update UI state and status messages
-- Handle copy action
+## 测试策略
 
-## Testing Strategy
+在编写生产代码前，先按测试驱动开发的方式编写密码生成核心逻辑测试。
 
-Follow test-driven development for the generation logic before implementing the production code.
+自动化测试至少覆盖以下行为：
 
-Core automated tests should cover:
+- 生成结果长度与请求长度一致
+- 结果只包含允许出现的字符
+- 所有启用的字符类型都会至少出现一次
+- 启用“排除易混淆字符”后，结果中不包含相关字符
+- 当没有选择任何字符类型时，生成逻辑会明确报错
 
-- Generated password length matches the requested length
-- Password contains only allowed characters
-- Each enabled character group appears at least once in the result
-- Ambiguous characters are excluded when that option is enabled
-- Generation fails clearly when no character groups are selected
+由于这是一个静态页面，自动化测试重点放在纯逻辑部分，不做浏览器自动化。页面交互通过手工验证补齐。
 
-Because this is a static site, the automated test focus is the pure logic rather than browser automation. UI behavior will be verified manually in the browser after implementation.
+手工验证至少覆盖：
 
-Manual verification should cover:
+- 首次打开页面会自动生成密码
+- 调整选项后可以重新生成密码
+- 复制按钮反馈正确
+- 配置无效时提示信息正常
+- 页面在桌面端和移动端宽度下都能正常使用
 
-- Password is generated on first page load
-- Regeneration works after changing options
-- Copy button feedback is correct
-- Validation messages appear when configuration is invalid
-- The page remains usable on desktop and mobile widths
+## 部署方式
 
-## Deployment
+项目内容直接提交到 `master` 分支，并保持为 GitHub Pages 可直接托管的静态站点结构。不需要单独的构建产物目录，也不需要额外部署命令。
 
-The site will be committed on the `master` branch and kept compatible with GitHub Pages static hosting. No build output directory or special deployment command is required.
+## 已确认的关键决策
 
-## Open Decisions Resolved
+- 页面定位：实用工具页，不做展示页
+- 托管方式：GitHub Pages
+- 技术栈：纯静态文件
+- 默认行为：页面加载后立即生成一组密码
+- 语言要求：页面文案和项目内面向用户的文本全部使用中文
 
-- Interface style: practical utility page, not a showcase site
-- Hosting target: GitHub Pages
-- Stack: pure static files
-- Default behavior: generate a password immediately on load
+## 实现边界
 
-## Implementation Boundaries
-
-The first version should stay intentionally small and focused. If future changes are needed, they can build on this foundation, but the initial delivery should prioritize reliability, clarity, and easy GitHub Pages deployment over extra features.
+第一版应保持小而完整，重点放在可靠性、清晰度和 GitHub Pages 兼容性上，不额外扩展无关功能。后续如果有新需求，可以在这个基础上继续迭代。
