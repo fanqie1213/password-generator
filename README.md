@@ -25,11 +25,6 @@ node --test tests/password-generator.test.mjs
 
 这个项目使用纯静态文件，无需构建。
 
-如果要启用 GitHub Pages，可以在仓库设置里把发布来源设为：
-
-- 分支：`master`
-- 目录：`/ (root)`
-
 ## 项目文件
 
 - `index.html`：页面结构
