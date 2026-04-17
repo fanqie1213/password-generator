@@ -92,7 +92,8 @@ h2 {
   font-size: 1.1rem;
 }
 
-.subtitle {
+.subtitle,
+.card-note {
   max-width: 40rem;
   color: var(--text-muted);
   line-height: 1.7;
@@ -101,10 +102,24 @@ h2 {
 .output-card,
 .controls,
 .length-card,
-.option-card {
+.option-card,
+.plaintext-card,
+.cipher-output-card,
+.cipher-input-card,
+.decrypt-output-card {
   border: 1px solid rgba(47, 62, 85, 0.1);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.74);
+}
+
+.encryption-card {
+  margin-top: 2px;
+}
+
+.card-note {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
 }
 
 .output-card,
@@ -130,13 +145,17 @@ h2 {
 .password-output,
 .length-number,
 .primary-button,
-.secondary-button {
+.secondary-button,
+.plaintext-input,
+.ciphertext-output {
   border: 1px solid transparent;
   font: inherit;
 }
 
 .password-output,
-.length-number {
+.length-number,
+.plaintext-input,
+.ciphertext-output {
   border-color: rgba(47, 62, 85, 0.16);
   border-radius: var(--radius-md);
   background: rgba(248, 251, 255, 0.95);
@@ -272,6 +291,31 @@ input[type="range"] {
 
 .strength-neutral {
   color: var(--text-muted);
+}
+
+.plaintext-card,
+.cipher-output-card,
+.cipher-input-card,
+.decrypt-output-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.plaintext-input,
+.ciphertext-output,
+.decrypt-input,
+.decrypt-output {
+  width: 100%;
+  padding: 14px 16px;
+  resize: vertical;
+  min-height: 116px;
+  line-height: 1.7;
+}
+
+.ciphertext-output,
+.decrypt-output {
+  font-family: var(--font-mono);
 }
 
 .sr-only {

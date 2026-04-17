@@ -10,9 +10,9 @@
     <main class="app-shell">
       <section class="panel" aria-labelledby="page-title">
         <header class="panel-header">
-          <p class="eyebrow">密码生成静态工具</p>
+          <p class="eyebrow">密码生成与加密静态工具</p>
           <h1 id="page-title">随机密码生成器</h1>
-          <p class="subtitle">本地生成、立即复制，适合自己日常快速使用。</p>
+          <p class="subtitle">本地生成、立即复制，也可以输入明文并使用浏览器内置 RSA 加密。</p>
         </header>
 
         <section class="output-card" aria-labelledby="result-title">
@@ -99,6 +99,71 @@
               <input id="exclude-ambiguous" type="checkbox" />
               <span>排除易混淆字符（如 0、O、1、l、I）</span>
             </label>
+          </div>
+        </section>
+
+        <section class="controls encryption-card" aria-labelledby="encryption-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="encryption-title">RSA 加密 / 解密</h2>
+              <p id="rsa-key-status" class="card-note">RSA 密钥准备中...</p>
+            </div>
+            <button id="encrypt-button" class="primary-button" type="button">
+              RSA 加密
+            </button>
+          </div>
+
+          <div class="plaintext-card">
+            <label for="plaintext-input">输入要加密的明文</label>
+            <textarea
+              id="plaintext-input"
+              class="plaintext-input"
+              rows="4"
+              placeholder="请输入明文，点击 RSA 加密后会生成 Base64 密文"
+            ></textarea>
+          </div>
+
+          <div class="cipher-output-card">
+            <label class="sr-only" for="ciphertext-output">RSA 加密后的密文</label>
+            <textarea
+              id="ciphertext-output"
+              class="ciphertext-output"
+              rows="4"
+              readonly
+              spellcheck="false"
+              placeholder="这里会显示 RSA 加密后的密文"
+            ></textarea>
+            <button id="copy-cipher-button" class="secondary-button" type="button">
+              复制密文
+            </button>
+          </div>
+
+          <div class="cipher-input-card">
+            <label for="decrypt-input">输入要解密的 Base64 密文</label>
+            <textarea
+              id="decrypt-input"
+              class="decrypt-input"
+              rows="4"
+              placeholder="把 RSA 加密后的 Base64 密文粘贴到这里"
+            ></textarea>
+          </div>
+
+          <div class="decrypt-output-card">
+            <label class="sr-only" for="decrypt-output">RSA 解密后的明文</label>
+            <textarea
+              id="decrypt-output"
+              class="decrypt-output"
+              rows="4"
+              readonly
+              spellcheck="false"
+              placeholder="这里会显示 RSA 解密后的明文"
+            ></textarea>
+            <button id="decrypt-button" class="primary-button" type="button">
+              RSA 解密
+            </button>
+            <button id="copy-decrypt-button" class="secondary-button" type="button">
+              复制明文
+            </button>
           </div>
         </section>
       </section>
